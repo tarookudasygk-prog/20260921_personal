@@ -138,6 +138,15 @@ body{
   background:var(--accent-bg);padding:11px 14px;
 }
 .maxbox[hidden]{display:none!important}
+.max-mode{display:flex;border:1px solid var(--accent);border-radius:2px;overflow:hidden;margin-bottom:9px}
+.max-mode button{
+  flex:1;appearance:none;border:0;border-right:1px solid var(--accent);background:transparent;
+  font-family:var(--f-body);font-size:12px;font-weight:500;color:var(--accent-2);
+  padding:8px 4px;min-height:38px;cursor:pointer;white-space:nowrap;
+}
+.max-mode button:last-child{border-right:0}
+.max-mode button[aria-pressed="true"]{background:var(--accent);color:var(--ground)}
+.max-mode button:focus-visible{outline:2px solid var(--accent-2);outline-offset:-3px}
 .max-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
 .max-row label{
   font-family:var(--f-body);font-size:13px;font-weight:500;color:var(--accent-2);
@@ -498,14 +507,18 @@ footer{margin-top:36px;font-size:12px;color:var(--ink-3);line-height:1.8}
 
 
 <div class="maxbox" id="maxBox" hidden>
+  <div class="max-mode" id="maxMode" role="group" aria-label="入力する値の種類">
+    <button type="button" data-m="top">3周目に使う重量</button>
+    <button type="button" data-m="rm">1回ギリギリのMAX</button>
+  </div>
   <div class="max-row">
-    <label for="maxIn">ベンチプレスのMAX</label>
+    <label for="maxIn" id="maxLabel">ベンチプレス 3周目</label>
     <input id="maxIn" type="number" inputmode="decimal" min="20" max="200" step="2.5" placeholder="—">
     <span class="u">kg</span>
     <button class="max-clear" type="button" id="maxClear">年齢層の値に戻す</button>
   </div>
   <p class="max-out" id="maxOut"></p>
-  <p class="max-help">聞き方は「ベンチは何kgくらい挙がりますか。それは1回ギリギリですか」。<b>5回くらいできる重さ</b>しか分からない場合は、その値の <b>1.15倍</b> をMAXとして入れてください（60kgで5回 → 70kg）。挙げたことがない方は空欄のままで構いません。<br><b>お客さんが変わったら、必ず「年齢層の値に戻す」を押してください。</b>前の方の数字が残ったままになります。</p>
+  <p class="max-help" id="maxHelp"></p>
 </div>
 
 <main id="plan"></main>
@@ -935,7 +948,7 @@ function bumpW(p,u){
 }
 // 40代基準の重量を、選んだ年齢に合わせて引き直す。丸めで段階が潰れないよう単調増加を保証する。
 function scaleW(w,u,k){
-  if(k==="bench"&&MAX1RM)return fromMax(MAX1RM,EX.bench.reps,u);
+  if(k==="bench"&&MAX1RM)return benchW(u);
   const mul=AGE[state.age].mul;
   const list=Array.isArray(w)?w:[w];
   let prev=0;
@@ -1198,15 +1211,17 @@ function renderRef(){
 
 
 /* ===================== MAXから逆算 ===================== */
-// サーキットで3周まわす前提なので、通常のセット法より低めの割合を使う。
-let MAX1RM=null;
+// 入力の意味は2通り。既定は「3周目に使う重量」で、そこから手前の周を逆算する。
+let MAX1RM=null, MAXMODE="top";
+const TOP_PCT=[0.70,0.85,1.00];
 function pctFor(reps){
   const r=parseInt(reps,10)||12;
   if(r<=10)return [0.45,0.55,0.65];
   if(r<=12)return [0.40,0.50,0.60];
   return [0.35,0.45,0.55];
 }
-function fromMax(max,reps,u){
+// 1回MAX（1RM）から。サーキットで3周まわす前提のため通常より低い割合を使う。
+function fromRM(max,reps,u){
   const pct=pctFor(reps); let prev=0;
   return pct.map(p=>{
     let v=roundW(max*p,u);
@@ -1214,6 +1229,20 @@ function fromMax(max,reps,u){
     prev=v;
     return fmtKg(v)+"kg";
   });
+}
+// 3周目に使う重量から。入力した値をそのまま3周目に置き、手前を70%/85%で逆算する。
+function fromTop(top,u){
+  let a=roundW(top*TOP_PCT[0],u);
+  let b=roundW(top*TOP_PCT[1],u);
+  if(b>=top)b=null;
+  if(b!==null&&a>=b)a=null;
+  if(b===null&&a>=top)a=null;
+  const list=[a,b,top].filter(x=>x!==null);
+  while(list.length<3)list.unshift(list[0]);
+  return list.map(v=>fmtKg(v)+"kg");
+}
+function benchW(u){
+  return MAXMODE==="top"?fromTop(MAX1RM,u):fromRM(MAX1RM,EX.bench.reps,u);
 }
 function planHasBench(p){
   return p.blocks.some(b=>b.items.some(i=>i.k==="bench"));
@@ -1223,16 +1252,24 @@ function syncMaxBox(p){
   const has=planHasBench(p);
   box.hidden=!has;
   if(!has)return;
-  const out=document.getElementById("maxOut");
+  document.querySelectorAll("#maxMode button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.m===MAXMODE));
+  document.getElementById("maxLabel").textContent=
+    MAXMODE==="top"?"ベンチプレス 3周目":"ベンチプレス 1回MAX";
+  const out=document.getElementById("maxOut"), help=document.getElementById("maxHelp");
   if(MAX1RM){
-    const w=fromMax(MAX1RM,EX.bench.reps,EX.bench.u);
-    const pct=pctFor(EX.bench.reps).map(x=>Math.round(x*100)+"%");
-    out.innerHTML=`MAX ${MAX1RM}kg → <b>${w.join(" → ")}</b>　(${pct.join(" / ")} × ${esc(EX.bench.reps)})`;
+    const w=benchW(EX.bench.u);
+    const tail=MAXMODE==="top"
+      ? `(70% / 85% / 100% × ${esc(EX.bench.reps)})`
+      : `(${pctFor(EX.bench.reps).map(x=>Math.round(x*100)+"%").join(" / ")} × ${esc(EX.bench.reps)})`;
+    const dup=w[0]===w[1]?`<br>1周目と2周目が同じ重量になりました。2周目は同じ重さのまま、動きを確かめる周にしてください。`:"";
+    out.innerHTML=(MAXMODE==="top"?`3周目 ${MAX1RM}kg`:`MAX ${MAX1RM}kg`)+` → <b>${w.join(" → ")}</b>　${tail}${dup}`;
   }else{
-    out.innerHTML=`未入力 — <b>${AGE[state.age].label}</b>の目安で計算中。MAXを聞けたら入れてください。`;
+    out.innerHTML=`未入力 — <b>${AGE[state.age].label}</b>の目安で計算中。`;
   }
+  help.innerHTML = MAXMODE==="top"
+    ? `その日いちばん重くする周の重量を入れます。<b>10回できる重さ</b>を入れてください。手前の2周は自動で軽く設定されます。迷ったら年齢層の目安のまま（空欄）で構いません。<br><b>お客さんが変わったら「年齢層の値に戻す」を押してください。</b>前の方の数字が残ります。`
+    : `聞き方は「ベンチは何kgくらい挙がりますか。それは1回ギリギリですか」。<b>5回くらいできる重さ</b>しか分からない場合は、その値の <b>1.15倍</b> を入れてください（60kgで5回 → 70kg）。<br><b>1回MAXをそのまま3周目には使いません。</b>1回しか挙がらない重量で10回はできないため、45〜65%に落として計算します。<br><b>お客さんが変わったら「年齢層の値に戻す」を押してください。</b>`;
 }
-
 /* ===================== 描画 ===================== */
 const state={time:"25",part:"lower",sex:"f",age:"40"};
 try{const v=JSON.parse(localStorage.getItem("ptplan3")||"null");if(v&&P[`${v.time}-${v.part}-${v.sex}`]&&AGE[v.age])Object.assign(state,v);}catch(e){}
@@ -1297,7 +1334,7 @@ function render(){
         <div class="ex-no">${String(no).padStart(2,"0")}</div>
         <div class="ex-fig">${e.fig}</div>
         <div class="ex-main">
-          <div class="ex-title"><h4>${esc(e.n)}</h4><span class="ex-target">${esc(e.t)}</span>${(it.k==="bench"&&MAX1RM)?`<span class="max-badge">MAX ${MAX1RM}kg から算出</span>`:""}</div>
+          <div class="ex-title"><h4>${esc(e.n)}</h4><span class="ex-target">${esc(e.t)}</span>${(it.k==="bench"&&MAX1RM)?`<span class="max-badge">${MAXMODE==="top"?`3周目 ${MAX1RM}kg から`:`MAX ${MAX1RM}kg から`}算出</span>`:""}</div>
           ${setsHTML(it, e)}
           <ol class="steps">${e.setup.map(s=>`<li>${esc(s)}</li>`).join("")}</ol>
           <div class="say"><span class="s-tag">声かけ</span><ul>${e.say.map(s=>`<li>${esc(s)}</li>`).join("")}</ul></div>
@@ -1428,6 +1465,10 @@ maxIn.addEventListener("input",()=>{
   const v=parseFloat(maxIn.value);
   MAX1RM=(isFinite(v)&&v>=20&&v<=300)?v:null;
   render();
+});
+document.getElementById("maxMode").addEventListener("click",ev=>{
+  const b=ev.target.closest("button"); if(!b)return;
+  MAXMODE=b.dataset.m; render();
 });
 document.getElementById("maxClear").addEventListener("click",()=>{
   MAX1RM=null; maxIn.value=""; render();
