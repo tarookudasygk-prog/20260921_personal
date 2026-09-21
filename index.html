@@ -131,6 +131,43 @@ body{
 .tl-key i{width:11px;height:11px;border-radius:1px;display:block;flex:none}
 
 
+
+/* ---------- MAXから逆算 ---------- */
+.maxbox{
+  margin-top:13px;border:1px solid var(--accent);border-radius:2px;
+  background:var(--accent-bg);padding:11px 14px;
+}
+.maxbox[hidden]{display:none!important}
+.max-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.max-row label{
+  font-family:var(--f-body);font-size:13px;font-weight:500;color:var(--accent-2);
+  white-space:nowrap;
+}
+.max-row input{
+  font-family:var(--f-mono);font-size:17px;font-weight:500;width:84px;
+  padding:7px 9px;border:1px solid var(--accent);border-radius:2px;
+  background:var(--surface);color:var(--ink);text-align:right;
+  font-variant-numeric:tabular-nums;
+}
+.max-row input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.max-row .u{font-family:var(--f-mono);font-size:12px;color:var(--accent-2);margin-left:-4px}
+.max-clear{
+  appearance:none;border:1px solid var(--accent);background:transparent;color:var(--accent-2);
+  font-family:var(--f-body);font-size:11.5px;padding:6px 11px;border-radius:2px;cursor:pointer;
+  margin-left:auto;white-space:nowrap;
+}
+.max-clear:hover{background:var(--surface)}
+.max-out{
+  margin:8px 0 0;font-family:var(--f-mono);font-size:13px;color:var(--accent-2);
+  font-variant-numeric:tabular-nums;line-height:1.6;
+}
+.max-out b{font-size:15px}
+.max-help{margin:6px 0 0;font-size:11.5px;color:var(--accent-2);line-height:1.65;opacity:.85}
+.max-badge{
+  font-family:var(--f-mono);font-size:9px;letter-spacing:.06em;font-weight:700;
+  background:var(--accent);color:var(--ground);padding:1px 7px;border-radius:999px;white-space:nowrap;
+}
+
 /* ---------- 進行表 ---------- */
 .sheet{margin-top:16px;border:1px solid var(--ink);border-radius:2px;overflow:hidden;background:var(--surface)}
 .sheet-head{display:flex;align-items:center;gap:10px;padding:9px 13px;background:var(--ink);color:var(--ground)}
@@ -403,7 +440,7 @@ footer{margin-top:36px;font-size:12px;color:var(--ink-3);line-height:1.8}
 @media print{
   body{background:#fff;font-size:10.5pt}
   .wrap{max-width:none;padding:0}
-  .selector,.mast-tools,.ref,footer{display:none}
+  .selector,.mast-tools,.ref,footer,.maxbox,.sh-reset{display:none}
   .mast{border-bottom:1.5pt solid #000}
   .block,.ex{break-inside:avoid;page-break-inside:avoid}
   .ex{padding:12px 10px}
@@ -457,6 +494,18 @@ footer{margin-top:36px;font-size:12px;color:var(--ink-3);line-height:1.8}
       <button type="button" data-v="50">50代</button>
     </div>
   </div>
+</div>
+
+
+<div class="maxbox" id="maxBox" hidden>
+  <div class="max-row">
+    <label for="maxIn">ベンチプレスのMAX</label>
+    <input id="maxIn" type="number" inputmode="decimal" min="20" max="200" step="2.5" placeholder="—">
+    <span class="u">kg</span>
+    <button class="max-clear" type="button" id="maxClear">年齢層の値に戻す</button>
+  </div>
+  <p class="max-out" id="maxOut"></p>
+  <p class="max-help">聞き方は「ベンチは何kgくらい挙がりますか。それは1回ギリギリですか」。<b>5回くらいできる重さ</b>しか分からない場合は、その値の <b>1.15倍</b> をMAXとして入れてください（60kgで5回 → 70kg）。挙げたことがない方は空欄のままで構いません。<br><b>お客さんが変わったら、必ず「年齢層の値に戻す」を押してください。</b>前の方の数字が残ったままになります。</p>
 </div>
 
 <main id="plan"></main>
@@ -885,7 +934,8 @@ function bumpW(p,u){
   return nextDB(p);
 }
 // 40代基準の重量を、選んだ年齢に合わせて引き直す。丸めで段階が潰れないよう単調増加を保証する。
-function scaleW(w,u){
+function scaleW(w,u,k){
+  if(k==="bench"&&MAX1RM)return fromMax(MAX1RM,EX.bench.reps,u);
   const mul=AGE[state.age].mul;
   const list=Array.isArray(w)?w:[w];
   let prev=0;
@@ -1146,6 +1196,43 @@ function renderRef(){
   document.querySelectorAll(".ref-age").forEach(e=>{e.textContent=AGE[state.age].label;});
 }
 
+
+/* ===================== MAXから逆算 ===================== */
+// サーキットで3周まわす前提なので、通常のセット法より低めの割合を使う。
+let MAX1RM=null;
+function pctFor(reps){
+  const r=parseInt(reps,10)||12;
+  if(r<=10)return [0.45,0.55,0.65];
+  if(r<=12)return [0.40,0.50,0.60];
+  return [0.35,0.45,0.55];
+}
+function fromMax(max,reps,u){
+  const pct=pctFor(reps); let prev=0;
+  return pct.map(p=>{
+    let v=roundW(max*p,u);
+    if(v<=prev)v=bumpW(prev,u);
+    prev=v;
+    return fmtKg(v)+"kg";
+  });
+}
+function planHasBench(p){
+  return p.blocks.some(b=>b.items.some(i=>i.k==="bench"));
+}
+function syncMaxBox(p){
+  const box=document.getElementById("maxBox");
+  const has=planHasBench(p);
+  box.hidden=!has;
+  if(!has)return;
+  const out=document.getElementById("maxOut");
+  if(MAX1RM){
+    const w=fromMax(MAX1RM,EX.bench.reps,EX.bench.u);
+    const pct=pctFor(EX.bench.reps).map(x=>Math.round(x*100)+"%");
+    out.innerHTML=`MAX ${MAX1RM}kg → <b>${w.join(" → ")}</b>　(${pct.join(" / ")} × ${esc(EX.bench.reps)})`;
+  }else{
+    out.innerHTML=`未入力 — <b>${AGE[state.age].label}</b>の目安で計算中。MAXを聞けたら入れてください。`;
+  }
+}
+
 /* ===================== 描画 ===================== */
 const state={time:"25",part:"lower",sex:"f",age:"40"};
 try{const v=JSON.parse(localStorage.getItem("ptplan3")||"null");if(v&&P[`${v.time}-${v.part}-${v.sex}`]&&AGE[v.age])Object.assign(state,v);}catch(e){}
@@ -1153,7 +1240,7 @@ const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
 
 const setsHTML=(it,e)=>{
   const reps=it.reps||e.reps;
-  const w=scaleW(it.w,e.u);
+  const w=scaleW(it.w,e.u,it.k);
   if(Array.isArray(w)){
     return `<div class="sets">`+w.map((w,i)=>
       `<div class="set-row${i===w.length-1?" top":""}"><span class="set-rd">${i+1}周目</span><span class="set-w">${esc(w)}</span><span class="set-r">${esc(Array.isArray(reps)?reps[i]:reps)}</span></div>`
@@ -1191,7 +1278,7 @@ function render(){
     const sep=(o.bi!==lastB&&p.blocks.length>1)
       ? `<li class="sh-sep">${esc(o.b.name)} ― ×${o.b.rounds}周</li>` : "";
     lastB=o.bi;
-    const sw=scaleW(o.it.w,e.u);
+    const sw=scaleW(o.it.w,e.u,o.it.k);
     return sep+`<li class="sh-row" data-go="${i}">
       <input type="checkbox" class="sh-cb" aria-label="${esc(e.n)} 完了">
       <span class="sh-no">${String(i+1).padStart(2,"0")}</span>
@@ -1210,7 +1297,7 @@ function render(){
         <div class="ex-no">${String(no).padStart(2,"0")}</div>
         <div class="ex-fig">${e.fig}</div>
         <div class="ex-main">
-          <div class="ex-title"><h4>${esc(e.n)}</h4><span class="ex-target">${esc(e.t)}</span></div>
+          <div class="ex-title"><h4>${esc(e.n)}</h4><span class="ex-target">${esc(e.t)}</span>${(it.k==="bench"&&MAX1RM)?`<span class="max-badge">MAX ${MAX1RM}kg から算出</span>`:""}</div>
           ${setsHTML(it, e)}
           <ol class="steps">${e.setup.map(s=>`<li>${esc(s)}</li>`).join("")}</ol>
           <div class="say"><span class="s-tag">声かけ</span><ul>${e.say.map(s=>`<li>${esc(s)}</li>`).join("")}</ul></div>
@@ -1292,6 +1379,7 @@ function render(){
 
   bindSheet(flat.length, totalSets);
   renderRef();
+  syncMaxBox(p);
   try{localStorage.setItem("ptplan3",JSON.stringify(state));}catch(e){}
 }
 
@@ -1333,6 +1421,16 @@ document.getElementById("themeBtn").addEventListener("click",()=>{
   const cur=document.documentElement.getAttribute("data-theme");
   const isDark=cur?cur==="dark":matchMedia("(prefers-color-scheme: dark)").matches;
   document.documentElement.setAttribute("data-theme",isDark?"light":"dark");
+});
+
+const maxIn=document.getElementById("maxIn");
+maxIn.addEventListener("input",()=>{
+  const v=parseFloat(maxIn.value);
+  MAX1RM=(isFinite(v)&&v>=20&&v<=300)?v:null;
+  render();
+});
+document.getElementById("maxClear").addEventListener("click",()=>{
+  MAX1RM=null; maxIn.value=""; render();
 });
 render();
 </script>
