@@ -183,7 +183,7 @@ body{
 
 .ex-main{min-width:0}
 .ex-title{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
-.ex-title h4{font-family:var(--f-display);font-weight:500;font-size:20px;margin:0;letter-spacing:.01em}
+.ex-title h4{font-family:var(--f-display);font-weight:500;font-size:20px;margin:0;letter-spacing:.01em;overflow-wrap:anywhere;min-width:0}
 .ex-target{
   font-family:var(--f-mono);font-size:10px;letter-spacing:.06em;color:var(--ink-3);
   border:1px solid var(--line-2);border-radius:999px;padding:1px 9px;white-space:nowrap;
@@ -1022,7 +1022,7 @@ function render(){
   const liftMin=p.blocks.reduce((a,b)=>a+b.min,0);
   const exCount=p.blocks.reduce((a,b)=>a+b.items.length,0);
 
-  const segs=[`<div class="tl-seg tl-prep" style="flex:${p.prep}">${p.prep}分 準備</div>`]
+  const segs=[`<div class="tl-seg tl-prep" style="flex:${p.prep}">${p.prep}分</div>`]
     .concat(p.blocks.map((b,i)=>`<div class="tl-seg tl-${i?"b":"a"}" style="flex:${b.min}">${esc(b.name.split("｜")[0])} ${b.min}分</div>`))
     .concat([`<div class="tl-seg tl-kick" style="flex:${p.kick}">キック ${p.kick}分</div>`]);
 
