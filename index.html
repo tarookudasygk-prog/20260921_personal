@@ -84,7 +84,8 @@ body{
 .tool-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 /* ---------- selector ---------- */
-.selector{display:grid;gap:13px;grid-template-columns:repeat(3,1fr);margin:20px 0 0}
+.selector{display:grid;gap:13px;grid-template-columns:repeat(4,1fr);margin:20px 0 0}
+.seg-age .seg button{padding-left:2px;padding-right:2px}
 .seg-label{
   font-family:var(--f-mono);font-size:10px;font-weight:500;
   letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);
@@ -174,6 +175,17 @@ body{
   .sh-reset{margin-left:auto}
 }
 .ex:target,.ex.flash{background:var(--accent-bg)}
+
+
+.agenote{
+  margin-top:14px;background:var(--surface);border:1px solid var(--line);
+  border-left:3px solid var(--steel);border-radius:2px;padding:12px 15px;
+}
+.agenote .a-tag{
+  font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;font-weight:700;
+  color:var(--steel);text-transform:uppercase;display:block;margin-bottom:4px;
+}
+.agenote p{margin:0;font-size:13px;color:var(--ink-2);line-height:1.75}
 
 /* ---------- 準備運動 / 整理運動 ---------- */
 .prep{margin-top:18px;border:1px solid var(--line);border-radius:2px;background:var(--surface);overflow:hidden}
@@ -357,6 +369,10 @@ footer{margin-top:36px;font-size:12px;color:var(--ink-3);line-height:1.8}
   .selector > div:nth-child(1){order:1}
   .selector > div:nth-child(3){order:2}
   .selector > div:nth-child(2){order:3;grid-column:1 / -1}
+  .selector > div:nth-child(4){order:4;grid-column:1 / -1}
+  .selector{gap:8px}
+  .selector .seg-label{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .seg button{padding-top:10px;padding-bottom:10px}
   .plan-head{gap:8px;margin-top:22px}
   .plan-theme{border-left:0;border-top:2px solid var(--accent);padding:7px 0 0}
   .block-head{padding:10px 13px}
@@ -432,13 +448,22 @@ footer{margin-top:36px;font-size:12px;color:var(--ink-3);line-height:1.8}
       <button type="button" data-v="m">男性</button>
     </div>
   </div>
+  <div class="seg-age">
+    <span class="seg-label">Age</span>
+    <div class="seg" id="segAge" role="group" aria-label="年齢層">
+      <button type="button" data-v="20">20代</button>
+      <button type="button" data-v="30">30代</button>
+      <button type="button" data-v="40">40代</button>
+      <button type="button" data-v="50">50代</button>
+    </div>
+  </div>
 </div>
 
 <main id="plan"></main>
 
 <section class="ref">
-  <h2>40〜50代・初心者を相手にするときの設計ルール</h2>
-  <p>この年代では、重量選びより下の6つのほうが事故と満足度を分けます。</p>
+  <h2>初心者を相手にするときの設計ルール</h2>
+  <p>年齢を問わず共通の6つです。重量選びより、こちらのほうが事故と満足度を分けます。年齢層ごとの注意はメニュー内に出しています。</p>
   <div class="rule-grid">
     <div class="rule hot">
       <h5>息を止めさせない</h5>
@@ -500,34 +525,15 @@ footer{margin-top:36px;font-size:12px;color:var(--ink-3);line-height:1.8}
 
 <section class="ref">
   <h2>重量早見表</h2>
-  <p>40〜50代・トレーニング初心者の一般的な目安です。周ごとに1段ずつ上げていきます。短い休憩で3周回すので、単発でやる場合より1段軽く設定してあります。</p>
+  <p>トレーニング初心者の目安です。周ごとに1段ずつ上げていきます。<b>上のトグルで選んだ年齢層に合わせて数値が切り替わります</b>（40代を基準に、20代 +25%／30代 +15%／50代 −15% で引き直し、ダンベルは1〜2kg、バーベルとプレートは2.5kg、ラットプルは5kg刻みに丸めています）。</p>
 
   <div class="wbox">
-    <h5>女性</h5>
+    <h5><span class="ref-age">40代</span> 女性</h5>
     <div class="tscroll">
     <table class="wtable">
       <thead><tr><th>種目</th><th>1周目</th><th>2周目</th><th>3周目</th><th>回数</th></tr></thead>
-      <tbody>
-        <tr class="sec"><td colspan="5">下半身</td></tr>
-        <tr><td>ワイドスクワット</td><td>自重</td><td>ダンベル 4kg</td><td>ダンベル 6kg</td><td>15回</td></tr>
-        <tr><td>ゴブレットスクワット</td><td>4kg</td><td>6kg</td><td>8kg</td><td>12回</td></tr>
-        <tr><td>ヒップスラスト</td><td>バー 20kg</td><td>25kg</td><td>30kg</td><td>15回</td></tr>
-        <tr><td>ブルガリアンスクワット</td><td>自重</td><td>2kg × 2</td><td>4kg × 2</td><td>10回 / 脚</td></tr>
-        <tr><td>ランジ / バックランジ</td><td>自重</td><td>2kg × 2</td><td>4kg × 2</td><td>10回 / 脚</td></tr>
-        <tr><td>ステップアップ</td><td>自重</td><td>2kg × 2</td><td>4kg × 2</td><td>12回 / 脚</td></tr>
-        <tr><td>ヒップリフト</td><td>自重</td><td>自重</td><td>自重</td><td>20回</td></tr>
-        <tr><td>クラムシェル</td><td>バンド</td><td>バンド</td><td>バンド</td><td>20回 / 脚</td></tr>
-        <tr class="sec"><td colspan="5">上半身</td></tr>
-        <tr><td>ダンベルプレス</td><td>3kg × 2</td><td>4kg × 2</td><td>5kg × 2</td><td>12回</td></tr>
-        <tr><td>ダンベルフライ</td><td>2kg × 2</td><td>3kg × 2</td><td>4kg × 2</td><td>15回</td></tr>
-        <tr><td>ラットプルダウン</td><td>15kg</td><td>20kg</td><td>25kg</td><td>15回</td></tr>
-        <tr><td>ワンハンドロウ</td><td>4kg</td><td>5kg</td><td>6kg</td><td>12回 / 腕</td></tr>
-        <tr><td>ショルダープレス</td><td>2kg × 2</td><td>3kg × 2</td><td>4kg × 2</td><td>12回</td></tr>
-        <tr><td>サイドレイズ</td><td>2kg × 2</td><td>2.5kg × 2</td><td>3kg × 2</td><td>15回</td></tr>
-        <tr><td>ダンベルキックバック</td><td>2kg × 2</td><td>2.5kg × 2</td><td>3kg × 2</td><td>15回</td></tr>
-        <tr><td>ダンベルカール</td><td>3kg × 2</td><td>4kg × 2</td><td>5kg × 2</td><td>12回</td></tr>
-        <tr><td>EZバーカール</td><td>バー単体</td><td>バー単体</td><td>バー単体</td><td>12 → 15 → 15回</td></tr>
-        <tr><td>ベンチプレス</td><td>バー 20kg</td><td>バー 20kg</td><td>バー 20kg</td><td>10回</td></tr>
+      <tbody id="refF">
+
       </tbody>
     </table>
     </div>
@@ -535,29 +541,12 @@ footer{margin-top:36px;font-size:12px;color:var(--ink-3);line-height:1.8}
   </div>
 
   <div class="wbox" style="margin-top:14px">
-    <h5>男性</h5>
+    <h5><span class="ref-age">40代</span> 男性</h5>
     <div class="tscroll">
     <table class="wtable">
       <thead><tr><th>種目</th><th>1周目</th><th>2周目</th><th>3周目</th><th>回数</th></tr></thead>
-      <tbody>
-        <tr class="sec"><td colspan="5">下半身</td></tr>
-        <tr><td>ワイドスクワット</td><td>自重</td><td>ダンベル 8kg</td><td>ダンベル 12kg</td><td>15回</td></tr>
-        <tr><td>ゴブレットスクワット</td><td>8kg</td><td>12kg</td><td>16kg</td><td>12回</td></tr>
-        <tr><td>ブルガリアンスクワット</td><td>自重</td><td>6kg × 2</td><td>8kg × 2</td><td>10回 / 脚</td></tr>
-        <tr><td>ランジ / バックランジ</td><td>自重</td><td>6kg × 2</td><td>8kg × 2</td><td>10回 / 脚</td></tr>
-        <tr><td>ステップアップ</td><td>自重</td><td>6kg × 2</td><td>8kg × 2</td><td>12回 / 脚</td></tr>
-        <tr><td>カーフレイズ</td><td>自重</td><td>8kg × 2</td><td>12kg × 2</td><td>20回</td></tr>
-        <tr class="sec"><td colspan="5">上半身</td></tr>
-        <tr><td>ベンチプレス</td><td>バー 20kg</td><td>30kg</td><td>40kg</td><td>10回</td></tr>
-        <tr><td>ダンベルプレス</td><td>8kg × 2</td><td>10kg × 2</td><td>12kg × 2</td><td>12回</td></tr>
-        <tr><td>ダンベルフライ</td><td>4kg × 2</td><td>5kg × 2</td><td>6kg × 2</td><td>15回</td></tr>
-        <tr><td>ラットプルダウン</td><td>30kg</td><td>40kg</td><td>45kg</td><td>15回</td></tr>
-        <tr><td>ワンハンドロウ</td><td>8kg</td><td>10kg</td><td>12kg</td><td>12回 / 腕</td></tr>
-        <tr><td>ショルダープレス</td><td>6kg × 2</td><td>8kg × 2</td><td>10kg × 2</td><td>12回</td></tr>
-        <tr><td>サイドレイズ</td><td>3kg × 2</td><td>4kg × 2</td><td>5kg × 2</td><td>15回</td></tr>
-        <tr><td>ダンベルキックバック</td><td>3kg × 2</td><td>4kg × 2</td><td>5kg × 2</td><td>15回</td></tr>
-        <tr><td>ダンベルカール</td><td>5kg × 2</td><td>6kg × 2</td><td>8kg × 2</td><td>12回</td></tr>
-        <tr><td>EZバーカール</td><td>バー単体</td><td>＋2.5kg × 2</td><td>＋5kg × 2</td><td>12回</td></tr>
+      <tbody id="refM">
+
       </tbody>
     </table>
     </div>
@@ -747,102 +736,102 @@ ${A_UP(112,60,34)}`),
 
 /* ===================== 種目マスタ ===================== */
 const EX={
-wideSquat:{n:"ワイドスクワット",t:"お尻・内もも",fig:FIG.wideSquat,reps:"15回",sec:"40秒",breath:1,
+wideSquat:{n:"ワイドスクワット",t:"お尻・内もも",fig:FIG.wideSquat,reps:"15回",sec:"40秒",u:"db",breath:1,
  setup:["足を肩幅より拳2つ分ひろげ、つま先をハの字（外30度）に向ける","手は胸の前で組む。背すじを立てたまま、お尻を真下に落とす","太ももが床と平行になったら、内ももで押して立ち上がる"],
  say:["つま先と同じ方向に、ひざを開いていきましょう","太ももが床と平行になるところまでです"],
  fix:"<b>ひざが内に入る</b> → 「ひざでつま先を押し出して」と声をかける。それでも入るなら足幅を少し狭める。"},
 
-bulgarian:{n:"ブルガリアンスクワット",t:"お尻・太もも裏",fig:FIG.bulgarian,reps:"10回 / 脚",sec:"55秒",
+bulgarian:{n:"ブルガリアンスクワット",t:"お尻・太もも裏",fig:FIG.bulgarian,reps:"10回 / 脚",sec:"55秒",u:"db",
  setup:["ベンチに浅く腰かけ、片足を前に伸ばした位置がスタートの足幅","後ろ足の甲をベンチに乗せ、前足に体重を9割乗せる","お尻を後ろに引きながら斜め後ろへ下ろし、斜め前へ立ち上がる"],
  say:["体重はぜんぶ前の足です。後ろの足は置いてるだけ","ひざが90度になるところで一度止まりましょう"],
  fix:"<b>手すりに片手を添えさせるのを標準にする。</b>この年代はバランスが先に崩れる。「支えたほうが効きますよ」と伝えれば抵抗なく受け入れてもらえる。"},
 
-hipThrust:{n:"ヒップスラスト",t:"お尻",fig:FIG.hipThrust,reps:"15回",sec:"45秒",breath:1,
+hipThrust:{n:"ヒップスラスト",t:"お尻",fig:FIG.hipThrust,reps:"15回",sec:"45秒",u:"bar",breath:1,
  setup:["ベンチに頭ではなく肩甲骨の下あたりを当てる","足は肩幅、つま先を少し外。ひざが90度になる位置に足を置く","バーは骨盤の少し上。必ずクッションを挟む。お尻を締めて真上に持ち上げる"],
  say:["いちばん上で1秒止めて、お尻をぎゅっと締めてください","あごを引いて、目線はおへそのほうです"],
  fix:"<b>腰が反る</b> → 上げすぎ。肩・腰・ひざが一直線になったところがトップだと伝える。"},
 
-lunge:{n:"フロントランジ",t:"太もも・お尻",fig:FIG.lunge,reps:"10回 / 脚",sec:"50秒",
+lunge:{n:"フロントランジ",t:"太もも・お尻",fig:FIG.lunge,reps:"10回 / 脚",sec:"50秒",u:"db",
  setup:["手は腰に。大きく一歩前に踏み出す","足の裏全体で体重を支え、前ひざが90度になるまで下ろす","前足で床を押して元の位置に戻る"],
  say:["足の裏ぜんぶで踏んでください、つま先だけにならないように","ひざが90度で止めましょう"],
  fix:"<b>40〜50代にはバックランジのほうを推奨。</b>前に踏み出す形はひざへの衝撃が大きく、着地でぐらつきやすい。"},
 
-backLunge:{n:"バックランジ",t:"お尻・太もも裏",fix:"",fig:FIG.backLunge,reps:"10回 / 脚",sec:"50秒",
+backLunge:{n:"バックランジ",t:"お尻・太もも裏",fix:"",fig:FIG.backLunge,reps:"10回 / 脚",sec:"50秒",u:"db",
  setup:["手は腰に。片足を後ろへ大きく引く","重心は前足のかかと。体重配分は前7・後ろ3","前足のかかとで押して戻る"],
  say:["前の足に7割、後ろは3割くらいの気持ちで","前のかかとで床を押して戻ってきてください"],
  fix:"前に踏み出すランジよりひざを痛めにくいので、<b>この年代はこちらを標準にする</b>。ふらつく方は壁に片手を添えて。"},
 
-stepUp:{n:"ステップアップ",t:"お尻・太もも",fig:FIG.stepUp,reps:"12回 / 脚",sec:"55秒",
+stepUp:{n:"ステップアップ",t:"お尻・太もも",fig:FIG.stepUp,reps:"12回 / 脚",sec:"55秒",u:"db",
  setup:["ステップ台に片足を全部乗せる（かかとがはみ出さない高さ）","台に乗せた足だけで体を押し上げる。後ろ足で跳ねない","下りるときはゆっくり、同じ足でコントロールして下ろす"],
  say:["下の足で蹴らずに、上の足だけで上がってきてください","下りるときのほうが大事です。ゆっくり下ろしましょう"],
  fix:"<b>台が高いとひざを痛める。</b>この年代は低め（20cm前後）から。反動で跳ねるようなら一段下げる。"},
 
-clamshell:{n:"クラムシェル",t:"お尻の横",fig:FIG.clamshell,reps:"20回 / 脚",sec:"40秒",
+clamshell:{n:"クラムシェル",t:"お尻の横",fig:FIG.clamshell,reps:"20回 / 脚",sec:"40秒",u:"none",
  setup:["バンドを両ひざの少し上に巻き、横向きに寝る","ひざを90度に曲げ、かかとを揃えたまま固定","かかとをつけたまま上のひざだけを開く"],
  say:["かかとは離さないで、ひざだけ開きます","お尻の横に効いてる感じがあればOKです"],
  fix:"<b>体が後ろに倒れる</b> → 骨盤が寝ている。「おへそを前に向けたまま」と伝える。"},
 
-bridge:{n:"ヒップリフト",t:"お尻",fig:FIG.bridge,reps:"20回",sec:"35秒",
+bridge:{n:"ヒップリフト",t:"お尻",fig:FIG.bridge,reps:"20回",sec:"35秒",u:"none",
  setup:["仰向けでひざを立て、かかとをお尻に近づける","手は床、手のひらは下。お尻を締めて真上に持ち上げる","肩・腰・ひざが一直線で1秒止め、ゆっくり下ろす"],
  say:["お尻を締めてから持ち上げてください","一番上で1秒キープです"],
  fix:"<b>太もも裏がつる</b> → かかとが遠い。もう少しお尻に寄せさせる。"},
 
-bench:{n:"ベンチプレス",t:"胸・三頭",fig:FIG.bench,reps:"10回",sec:"45秒",breath:1,
+bench:{n:"ベンチプレス",t:"胸・三頭",fig:FIG.bench,reps:"10回",sec:"45秒",u:"bar",breath:1,
  setup:["バーのローレット（ざらざらした目印）を目安に手幅をとる","肩甲骨を寄せてベンチに置き、足は床にしっかりつける","胸の真ん中に下ろし、みぞおちの上あたりへ押し上げる"],
  say:["このあと◯kgで◯回いきます","下ろすときは3秒、胸に触れたら押し上げます"],
  fix:"下ろすときも上げるときも、<b>必ずバーに手を添えて補助する</b>。肩が痛む方は無理をせずダンベルプレスに振り替える。"},
 
-dbPress:{n:"ダンベルプレス",t:"胸・三頭",fig:FIG.dbPress,reps:"12回",sec:"40秒",breath:1,
+dbPress:{n:"ダンベルプレス",t:"胸・三頭",fig:FIG.dbPress,reps:"12回",sec:"40秒",u:"db",breath:1,
  setup:["ダンベルを太ももに置いて座り、ひざで蹴り上げながら仰向けになる","ひじが体と45度になる位置で構える（真横に開かない）","胸の高さまで下ろし、胸で押し上げる"],
  say:["ひじは真横ではなく、少し斜めです","下ろすときに胸が伸びる感じを探しましょう"],
  fix:"バーベルより軌道が自由なぶん<b>肩が硬い方はこちらのほうが安全</b>。終了時はダンベルを太ももに落としてから起き上がらせる。"},
 
-dbFly:{n:"ダンベルフライ",t:"胸（外側）",fig:FIG.dbFly,reps:"15回",sec:"40秒",
+dbFly:{n:"ダンベルフライ",t:"胸（外側）",fig:FIG.dbFly,reps:"15回",sec:"40秒",u:"db",
  setup:["ダンベルを胸の上で向かい合わせに構え、ひじを軽く曲げて固定する","ひじの角度を変えずに、大きく弧を描いて両腕を開く","胸が伸びたところから、抱きしめるように閉じる"],
  say:["ひじの角度は変えずに、大きく開いていきます","大きいボールを抱えるイメージで閉じましょう"],
  fix:"<b>下ろしすぎない。</b>ひじが肩のラインより下がると肩を痛める。胸と同じ高さで止めさせる。"},
 
-latPull:{n:"ラットプルダウン",t:"背中（広背筋）",fig:FIG.latPull,reps:"15回",sec:"45秒",
+latPull:{n:"ラットプルダウン",t:"背中（広背筋）",fig:FIG.latPull,reps:"15回",sec:"45秒",u:"stack",
  setup:["パッドを太ももに固定し、肩幅の1.5倍で順手に握る","胸を張って少しだけ後ろに傾く。バーを鎖骨に向けて引く","ひじを体の後ろに送るイメージ。ゆっくり戻す"],
  say:["腕で引かずに、ひじを下に引き下げる感じです","胸を張ってバーを迎えにいきましょう"],
  fix:"<b>必ず胸側に引く。頭の後ろには下ろさない</b>（肩を痛める）。腕だけで引く方には「小指側で握って」と伝えると背中が使いやすくなる。"},
 
-row:{n:"ワンハンドダンベルロウ",t:"背中（厚み）",fig:FIG.row,reps:"12回 / 腕",sec:"50秒",
+row:{n:"ワンハンドダンベルロウ",t:"背中（厚み）",fig:FIG.row,reps:"12回 / 腕",sec:"50秒",u:"db",
  setup:["ベンチに片手・片ひざをつき、背中を床と平行にする","反対の手でダンベルを持ち、肩から真下にぶら下げる","ひじを腰のほうへ引き上げ、肩甲骨を寄せる"],
  say:["ひじをお尻のほうに引き上げてください","背中はテーブルのように水平に保ちます"],
  fix:"<b>体をひねって上げる</b> → 重すぎる。肩のラインが床と平行のままできる重量まで落とす。"},
 
-shoulderPress:{n:"ダンベルショルダープレス",t:"肩",fig:FIG.shoulderPress,reps:"12回",sec:"40秒",breath:1,
+shoulderPress:{n:"ダンベルショルダープレス",t:"肩",fig:FIG.shoulderPress,reps:"12回",sec:"40秒",u:"db",breath:1,
  setup:["ベンチに座り、ダンベルを耳の高さに構える（手のひらは前向き）","肋骨が開かないよう、お腹に軽く力を入れる","真上に押し上げ、耳の高さまで戻す"],
  say:["真上に押し上げます。前に出ないように","下ろすのは耳の高さまででOKです"],
  fix:"<b>この年代は必ず座って行う</b>（立位だと腰が反る）。肩に引っかかりを感じる方はサイドレイズに振り替える。"},
 
-lateral:{n:"サイドレイズ",t:"肩（横）",fig:FIG.lateral,reps:"15回",sec:"35秒",
+lateral:{n:"サイドレイズ",t:"肩（横）",fig:FIG.lateral,reps:"15回",sec:"35秒",u:"db",
  setup:["ダンベルを体の横に持ち、ひじを軽く曲げる","小指側からリードして、肩の高さまで真横に上げる","力を抜かずにゆっくり下ろす"],
  say:["肩の高さまでで十分です、それ以上は上げなくて大丈夫","下ろすときもゆっくり、3秒かけましょう"],
  fix:"<b>反動を使う</b> → 軽くする。2〜4kgでも十分効く種目だと先に伝えておくと納得してもらいやすい。"},
 
-kickback:{n:"ダンベルキックバック",t:"二の腕（三頭）",fig:FIG.kickback,reps:"15回",sec:"40秒",
+kickback:{n:"ダンベルキックバック",t:"二の腕（三頭）",fig:FIG.kickback,reps:"15回",sec:"40秒",u:"db",
  setup:["ベンチに片手をつき、背中を床と平行にする","ひじを体の横に固定したまま持ち上げる（ここが動かないのが要）","前腕だけを後ろへ伸ばし、伸ばしきって1秒止める"],
  say:["ひじの位置は絶対に動かさないでください","伸ばしきったところで1秒止めます"],
  fix:"<b>ひじが下がる</b> → 重すぎる。女性は2〜3kgで十分効く。二の腕を気にする方に一番刺さる種目。"},
 
-curl:{n:"ダンベルカール",t:"二の腕（力こぶ）",fig:FIG.curl,reps:"12回",sec:"35秒",
+curl:{n:"ダンベルカール",t:"二の腕（力こぶ）",fig:FIG.curl,reps:"12回",sec:"35秒",u:"db",
  setup:["ダンベルを体の横に持ち、ひじを脇腹に固定する","ひじを動かさずに巻き上げる","下ろすときは伸ばしきる手前で止める"],
  say:["ひじは脇につけたままです","下ろすときもコントロールして、ストンと落とさないように"],
  fix:"<b>体を振る</b> → 壁に背中をつけて行わせると反動が使えなくなる。"},
 
-ezCurl:{n:"EZバーカール",t:"二の腕（力こぶ）",fig:FIG.ezCurl,reps:"12回",sec:"35秒",
+ezCurl:{n:"EZバーカール",t:"二の腕（力こぶ）",fig:FIG.ezCurl,reps:"12回",sec:"35秒",u:"plate",
  setup:["EZバーの波になっている部分を、手のひらを上に向けて握る","ひじを脇腹に固定し、バーを下ろしきった位置から始める","ひじを動かさずに巻き上げ、ゆっくり下ろす"],
  say:["ひじは脇につけたままです","下ろすときもコントロールして、ストンと落とさないように"],
  fix:"手首がまっすぐなストレートバーより<b>手首と肘への負担が少ない</b>。重いダンベルがなくてもプレートで刻めるので、男性はこちらのほうが段階をつけやすい。女性はバー単体で十分効く。"},
 
-goblet:{n:"ゴブレットスクワット",t:"太もも前・お尻",fig:FIG.goblet,reps:"12回",sec:"45秒",breath:1,
+goblet:{n:"ゴブレットスクワット",t:"太もも前・お尻",fig:FIG.goblet,reps:"12回",sec:"45秒",u:"db",breath:1,
  setup:["ダンベルを縦に持ち、胸の前で抱える（ひじは下向き）","足は肩幅。胸を張ったまま、お尻を後ろに引きながら下ろす","かかとで床を押して立つ。ダンベルは終始胸から離さない"],
  say:["ダンベルを胸に押しつけたままで大丈夫です","かかとで床を押して立ち上がりましょう"],
  fix:"<b>前に倒れる</b> → ダンベルが胸から離れているサイン。重量を下げてでも胸に固定させる。"},
 
-calf:{n:"カーフレイズ",t:"ふくらはぎ",fig:FIG.calf,reps:"20回",sec:"30秒",
+calf:{n:"カーフレイズ",t:"ふくらはぎ",fig:FIG.calf,reps:"20回",sec:"30秒",u:"db",
  setup:["ステップ台の端につま先を乗せ、かかとを空中に出す","かかとを下ろしきってストレッチ、そこから最大まで上げる","上で1秒止めてからゆっくり下ろす"],
  say:["かかとを下まで落としてから、思い切り上げましょう","上で止めるとしっかり効きます"],
  fix:"<b>ふらつく</b> → 壁か手すりに手を添えさせる。上下それぞれ2秒のペースを口で数えてあげると揃う。"},
@@ -865,6 +854,54 @@ const ASK=[
 const ASK_NOTE="この4つの答えで、上のトグル（部位・時間）を決める。「入れたくない種目」は必ず聞く — 過去に痛めた種目が出てくることがある。";
 const COOL="準備運動とまったく同じ4種（ひざ回し・腕回し・手首回し・首回し）。キックで上がった心拍を落としてから見送る。";
 const COOL_SAY="お疲れさまでした。最後に同じ体操で整えましょう";
+
+
+/* ===================== 年齢層 ===================== */
+const AGE={
+ "20":{label:"20代",mul:1.25,
+   note:"可動域が出るので、ひざ90度・胸まで下ろすところまでフルに使わせてよい。3周目は余力1〜2回まで追い込んでも構わないが、フォームが崩れた時点で止める。回復が速いので、キック15分を残しても動けます。"},
+ "30":{label:"30代",mul:1.15,
+   note:"デスクワークで肩と股関節が硬くなっている方が多い年代です。準備運動の腕回し・ひざ回しで動きの硬さを見て、硬ければ1周目の重量を下げて可動域を作るほうを優先してください。"},
+ "40":{label:"40代",mul:1.0,
+   note:"関節の違和感が出はじめる年代です。痛みと「効いている」を区別して聞き、痛みなら即座に種目を替える。血圧が気になる方もいるので、力むときに息を止めさせないでください。"},
+ "50":{label:"50代",mul:0.85,
+   note:"可動域は狭くて構いません。ひざ90度まで曲がらなければ、曲がるところまでで止めさせる。片脚種目は必ず手すりに片手を添えさせ、3周目は重量を上げずに据え置く判断を優先してください。回復が遅いので、キックに余力を残して終えます。"},
+};
+
+const fmtKg=v=>String(Math.round(v*10)/10);
+// 実際に用意できる重量にスナップさせる。可変ダンベルとプレートの刻みに合わせてある。
+const DB_LIST=[1,1.5,2,2.5,3,4,5,6,7,8,9,10,12,14,16,18,20,22,24];
+const snapDB=v=>DB_LIST.reduce((a,b)=>Math.abs(b-v)<Math.abs(a-v)?b:a);
+const nextDB=p=>DB_LIST.find(x=>x>p)||p+2;
+function roundW(v,u){
+  if(u==="bar")   return Math.max(20,Math.round(v/5)*5);    // バー20kg + 2.5kgプレート×2
+  if(u==="stack") return Math.max(10,Math.round(v/5)*5);    // ウェイトスタック
+  if(u==="plate") return Math.max(2.5,Math.round(v/2.5)*2.5);
+  return snapDB(v);
+}
+function bumpW(p,u){
+  if(u==="bar"||u==="stack")return p+5;
+  if(u==="plate")return p+2.5;
+  return nextDB(p);
+}
+// 40代基準の重量を、選んだ年齢に合わせて引き直す。丸めで段階が潰れないよう単調増加を保証する。
+function scaleW(w,u){
+  const mul=AGE[state.age].mul;
+  const list=Array.isArray(w)?w:[w];
+  let prev=0;
+  const out=list.map(str=>{
+    const m=String(str).match(/([\d.]+)\s*kg/);
+    if(!m){ return str; }
+    const base=parseFloat(m[1]);
+    if(/バー\s*20\s*kg/.test(str)){ prev=Math.max(prev,20); return str; }
+    if(mul===1){ prev=Math.max(prev,base); return str; }
+    let v=roundW(base*mul,u);
+    if(v<=prev) v=bumpW(prev,u);
+    prev=v;
+    return String(str).replace(/[\d.]+\s*kg/, fmtKg(v)+"kg");
+  });
+  return Array.isArray(w)?out:out[0];
+}
 
 /* ===================== プラン ===================== */
 const P={
@@ -915,8 +952,8 @@ const P={
 "25-full-f":{title:"25分 / 全身 / 女性",theme:"下半身・胸・背中・お尻を1種目ずつ。「全身やりたい」と言われたときの汎用版。",prep:2,cool:1,kick:10,
  blocks:[{name:"サーキット",where:"<b>ダンベル → ベンチ → ラットプル → ベンチ</b>。ヒップスラスト用のバーを最初にセットしておく。",rounds:3,gap:"種目間 15秒",roundRest:"周回間 45秒",min:12,
   items:[
+   {k:"dbPress",w:["3kg × 2","4kg × 2","5kg × 2"],tip:"1種目目はあえてプレスから。いきなりスクワットより「ジムに来てやっている」実感が出て、そのあとの下半身にも入りやすくなる。"},
    {k:"wideSquat",w:["自重","ダンベル 4kg","ダンベル 6kg"]},
-   {k:"dbPress",w:["3kg × 2","4kg × 2","5kg × 2"]},
    {k:"latPull",w:["15kg","20kg","25kg"]},
    {k:"hipThrust",w:["バー 20kg","25kg","30kg"],tip:"全身メニューの中でも一番「効いた感」が出る種目。最後に置いて印象を残す。"},
   ]}],
@@ -926,8 +963,8 @@ const P={
 "25-full-m":{title:"25分 / 全身 / 男性",theme:"しゃがむ・押す・引く・股関節を1種目ずつ。大きい筋肉から順に並べた汎用版。",prep:2,cool:1,kick:10,
  blocks:[{name:"サーキット",where:"<b>ダンベル → ベンチ台 → ラットプル → フリー</b>。ベンチのプレートは先に30kgまで組んでおく。",rounds:3,gap:"種目間 15秒",roundRest:"周回間 60秒",min:12,
   items:[
+   {k:"bench",w:["バー 20kg","30kg","40kg"],tip:"1種目目はベンチプレスから。スクワットより先に持ってくると「今日やった」という手応えが最初に立つ。大きい筋肉から入る原則も外していない。"},
    {k:"wideSquat",w:["自重","ダンベル 8kg","ダンベル 12kg"]},
-   {k:"bench",w:["バー 20kg","30kg","40kg"]},
    {k:"latPull",w:["30kg","40kg","45kg"]},
    {k:"backLunge",w:["自重","6kg × 2","8kg × 2"]},
   ]}],
@@ -1015,19 +1052,19 @@ const P={
 
 "50-full-f":{title:"50分 / 全身 / 女性",theme:"下半身ブロックと上半身ブロックを3周ずつ。「全身やりたい」と言われたときの50分版。",prep:3,cool:2,kick:15,
  blocks:[
-  {name:"ブロックA｜下半身",where:"<b>ベンチ周りで完結</b>。ヒップスラスト用のバーとダンベル2・4・6kgを先に出しておく。",rounds:3,gap:"種目間 15秒",roundRest:"周回間 45秒",min:15,
+  {name:"ブロックA｜ベンチ周り",where:"<b>ベンチ台から動かない4種目</b>。ヒップスラスト用のバーとダンベル2・3・4・5・6kgを先に出しておく。",rounds:3,gap:"種目間 15秒",roundRest:"周回間 45秒",min:15,
    items:[
+    {k:"dbPress",w:["3kg × 2","4kg × 2","5kg × 2"],tip:"1種目目はあえてプレスから。いきなりスクワットより「やっている」実感が立ち、そのあとの下半身に入りやすくなる。"},
     {k:"wideSquat",w:["自重","ダンベル 4kg","ダンベル 6kg"]},
     {k:"hipThrust",w:["バー 20kg","25kg","30kg"]},
-    {k:"backLunge",w:["自重","2kg × 2","4kg × 2"]},
-    {k:"bridge",w:"自重"},
+    {k:"kickback",w:["2kg × 2","2.5kg × 2","3kg × 2"]},
    ]},
-  {name:"ブロックB｜上半身",where:"<b>ベンチ → ラットプル</b>。ダンベル2・3・4・5kgを持って移動する。",rounds:3,gap:"種目間 15秒",roundRest:"周回間 45秒",min:15,
+  {name:"ブロックB｜マシンとマット",where:"<b>ラットプル → フリー → マット</b>。ダンベル2・3kgを持って移動し、最後にマットへ降りて終わる並び。",rounds:3,gap:"種目間 15秒",roundRest:"周回間 45秒",min:15,
    items:[
-    {k:"dbPress",w:["3kg × 2","4kg × 2","5kg × 2"]},
     {k:"latPull",w:["15kg","20kg","25kg"]},
     {k:"lateral",w:["2kg × 2","2.5kg × 2","3kg × 2"]},
-    {k:"kickback",w:["2kg × 2","2.5kg × 2","3kg × 2"]},
+    {k:"backLunge",w:["自重","2kg × 2","4kg × 2"]},
+    {k:"bridge",w:"自重"},
    ]},
  ],
  flex:"押しているときは<b>ブロックBを2周に落とす</b>。全身メニューは「どこも触った」ことが価値なので、種目を削るより周回を削る。",
@@ -1035,44 +1072,101 @@ const P={
 
 "50-full-m":{title:"50分 / 全身 / 男性",theme:"下半身ブロックと上半身ブロックを3周ずつ。しゃがむ・押す・引く・股関節を全部含む50分版。",prep:3,cool:2,kick:15,
  blocks:[
-  {name:"ブロックA｜下半身",where:"<b>ベンチ周りとステップ台</b>。バーとダンベル6・8・12kgを出しておく。",rounds:3,gap:"種目間 15秒",roundRest:"周回間 45秒",min:15,
+  {name:"ブロックA｜ベンチ周り",where:"<b>ベンチ台から動かない4種目</b>。プレートは40kgまで組める配置にし、ダンベル6・8・12・16kgを足元へ。",rounds:3,gap:"種目間 15秒",roundRest:"周回間 60秒",min:15,
    items:[
+    {k:"bench",w:["バー 20kg","30kg","40kg"],tip:"1種目目はベンチプレスから。スクワットより先に持ってくると「今日やった」という手応えが最初に立つ。"},
     {k:"wideSquat",w:["自重","ダンベル 8kg","ダンベル 12kg"]},
     {k:"goblet",w:["8kg","12kg","16kg"]},
     {k:"bulgarian",w:["自重","6kg × 2","8kg × 2"],tip:"手すりに片手を添えさせる。"},
-    {k:"stepUp",w:["自重","6kg × 2","8kg × 2"]},
    ]},
-  {name:"ブロックB｜上半身",where:"<b>ベンチ台 → ラットプル</b>。ベンチプレスを1種目目に置いて先に済ませる。",rounds:3,gap:"種目間 15秒",roundRest:"周回間 60秒",min:15,
+  {name:"ブロックB｜マシンと台",where:"<b>ラットプル → ベンチ → ステップ台</b>。ダンベル6・8・10kgを持って移動する。",rounds:3,gap:"種目間 15秒",roundRest:"周回間 45秒",min:15,
    items:[
-    {k:"bench",w:["バー 20kg","30kg","40kg"]},
     {k:"latPull",w:["30kg","40kg","45kg"]},
     {k:"row",w:["8kg","10kg","12kg"]},
     {k:"shoulderPress",w:["6kg × 2","8kg × 2","10kg × 2"],tip:"必ず座って行う。"},
+    {k:"stepUp",w:["自重","6kg × 2","8kg × 2"]},
    ]},
  ],
  flex:"押しているときは<b>ブロックBを2周に落とす</b>。ベンチプレスを1種目目に置いてあるので、時間が削れても主役の種目は必ず入る。",
  handoff:"全身を通したうえで脚も使っています。キックは最初のラウンドを軽めにして、動けるか見てから強度を上げてください。"},
 };
 
+
+/* ===================== 重量早見表のもとデータ（40代基準） ===================== */
+const REF={
+ f:[["下半身"],
+    ["ワイドスクワット","自重","ダンベル 4kg","ダンベル 6kg","15回","db"],
+    ["ゴブレットスクワット","4kg","6kg","8kg","12回","db"],
+    ["ヒップスラスト","バー 20kg","25kg","30kg","15回","bar"],
+    ["ブルガリアンスクワット","自重","2kg × 2","4kg × 2","10回 / 脚","db"],
+    ["ランジ / バックランジ","自重","2kg × 2","4kg × 2","10回 / 脚","db"],
+    ["ステップアップ","自重","2kg × 2","4kg × 2","12回 / 脚","db"],
+    ["ヒップリフト","自重","自重","自重","20回","none"],
+    ["クラムシェル","バンド","バンド","バンド","20回 / 脚","none"],
+    ["上半身"],
+    ["ダンベルプレス","3kg × 2","4kg × 2","5kg × 2","12回","db"],
+    ["ダンベルフライ","2kg × 2","3kg × 2","4kg × 2","15回","db"],
+    ["ラットプルダウン","15kg","20kg","25kg","15回","stack"],
+    ["ワンハンドロウ","4kg","5kg","6kg","12回 / 腕","db"],
+    ["ショルダープレス","2kg × 2","3kg × 2","4kg × 2","12回","db"],
+    ["サイドレイズ","2kg × 2","2.5kg × 2","3kg × 2","15回","db"],
+    ["ダンベルキックバック","2kg × 2","2.5kg × 2","3kg × 2","15回","db"],
+    ["ダンベルカール","3kg × 2","4kg × 2","5kg × 2","12回","db"],
+    ["EZバーカール","バー単体","バー単体","バー単体","12 → 15 → 15回","none"],
+    ["ベンチプレス","バー 20kg","バー 20kg","バー 20kg","10回","bar"]],
+ m:[["下半身"],
+    ["ワイドスクワット","自重","ダンベル 8kg","ダンベル 12kg","15回","db"],
+    ["ゴブレットスクワット","8kg","12kg","16kg","12回","db"],
+    ["ブルガリアンスクワット","自重","6kg × 2","8kg × 2","10回 / 脚","db"],
+    ["ランジ / バックランジ","自重","6kg × 2","8kg × 2","10回 / 脚","db"],
+    ["ステップアップ","自重","6kg × 2","8kg × 2","12回 / 脚","db"],
+    ["カーフレイズ","自重","8kg × 2","12kg × 2","20回","db"],
+    ["上半身"],
+    ["ベンチプレス","バー 20kg","30kg","40kg","10回","bar"],
+    ["ダンベルプレス","8kg × 2","10kg × 2","12kg × 2","12回","db"],
+    ["ダンベルフライ","4kg × 2","5kg × 2","6kg × 2","15回","db"],
+    ["ラットプルダウン","30kg","40kg","45kg","15回","stack"],
+    ["ワンハンドロウ","8kg","10kg","12kg","12回 / 腕","db"],
+    ["ショルダープレス","6kg × 2","8kg × 2","10kg × 2","12回","db"],
+    ["サイドレイズ","3kg × 2","4kg × 2","5kg × 2","15回","db"],
+    ["ダンベルキックバック","3kg × 2","4kg × 2","5kg × 2","15回","db"],
+    ["ダンベルカール","5kg × 2","6kg × 2","8kg × 2","12回","db"],
+    ["EZバーカール","バー単体","＋2.5kg × 2","＋5kg × 2","12回","plate"]],
+};
+function refRows(sex){
+  return REF[sex].map(r=>{
+    if(r.length===1)return `<tr class="sec"><td colspan="5">${r[0]}</td></tr>`;
+    const w=scaleW([r[1],r[2],r[3]],r[5]);
+    return `<tr><td>${r[0]}</td><td>${w[0]}</td><td>${w[1]}</td><td>${w[2]}</td><td>${r[4]}</td></tr>`;
+  }).join("");
+}
+function renderRef(){
+  document.getElementById("refF").innerHTML=refRows("f");
+  document.getElementById("refM").innerHTML=refRows("m");
+  document.querySelectorAll(".ref-age").forEach(e=>{e.textContent=AGE[state.age].label;});
+}
+
 /* ===================== 描画 ===================== */
-const state={time:"25",part:"lower",sex:"f"};
-try{const s=JSON.parse(localStorage.getItem("ptplan2")||"null");if(s&&s.time&&s.part&&s.sex&&P[`${s.time}-${s.part}-${s.sex}`])Object.assign(state,s);}catch(e){}
+const state={time:"25",part:"lower",sex:"f",age:"40"};
+try{const v=JSON.parse(localStorage.getItem("ptplan3")||"null");if(v&&P[`${v.time}-${v.part}-${v.sex}`]&&AGE[v.age])Object.assign(state,v);}catch(e){}
 const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
 
 const setsHTML=(it,e)=>{
   const reps=it.reps||e.reps;
-  if(Array.isArray(it.w)){
-    return `<div class="sets">`+it.w.map((w,i)=>
-      `<div class="set-row${i===it.w.length-1?" top":""}"><span class="set-rd">${i+1}周目</span><span class="set-w">${esc(w)}</span><span class="set-r">${esc(Array.isArray(reps)?reps[i]:reps)}</span></div>`
+  const w=scaleW(it.w,e.u);
+  if(Array.isArray(w)){
+    return `<div class="sets">`+w.map((w,i)=>
+      `<div class="set-row${i===w.length-1?" top":""}"><span class="set-rd">${i+1}周目</span><span class="set-w">${esc(w)}</span><span class="set-r">${esc(Array.isArray(reps)?reps[i]:reps)}</span></div>`
     ).join("")+`</div>`;
   }
-  return `<div class="sets set-fixed"><div class="set-row"><span class="set-rd">3周とも</span><span class="set-w">${esc(it.w)}</span><span class="set-r">${esc(reps)}</span></div></div>`;
+  return `<div class="sets set-fixed"><div class="set-row"><span class="set-rd">3周とも</span><span class="set-w">${esc(w)}</span><span class="set-r">${esc(reps)}</span></div></div>`;
 };
 
 function render(){
   document.querySelectorAll("#segTime button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===state.time));
   document.querySelectorAll("#segPart button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===state.part));
   document.querySelectorAll("#segSex button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===state.sex));
+  document.querySelectorAll("#segAge button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===state.age));
 
   const p=P[`${state.time}-${state.part}-${state.sex}`];
   const total=Number(state.time);
@@ -1097,12 +1191,13 @@ function render(){
     const sep=(o.bi!==lastB&&p.blocks.length>1)
       ? `<li class="sh-sep">${esc(o.b.name)} ― ×${o.b.rounds}周</li>` : "";
     lastB=o.bi;
+    const sw=scaleW(o.it.w,e.u);
     return sep+`<li class="sh-row" data-go="${i}">
       <input type="checkbox" class="sh-cb" aria-label="${esc(e.n)} 完了">
       <span class="sh-no">${String(i+1).padStart(2,"0")}</span>
       <span class="sh-name">${esc(e.n)}</span>
       <span class="sh-min" data-min="${per}">${Math.round(per)}分</span>
-      <span class="sh-detail">${esc(shortW(o.it.w))} ・ ${esc(Array.isArray(reps)?reps.join(" / "):reps)} × ${o.b.rounds}周</span>
+      <span class="sh-detail">${esc(shortW(sw))} ・ ${esc(Array.isArray(reps)?reps.join(" / "):reps)} × ${o.b.rounds}周</span>
     </li>`;
   }).join("");
   const totalSets=flat.reduce((a,o)=>a+o.b.rounds,0);
@@ -1137,7 +1232,7 @@ function render(){
   }).join("");
 
   document.getElementById("plan").innerHTML=`
-    <div class="plan-head"><h2>${esc(p.title)}</h2><p class="plan-theme">${esc(p.theme)}</p></div>
+    <div class="plan-head"><h2>${esc(p.title.replace(/ \/ (女性|男性)$/, " / "+AGE[state.age].label+" $1"))}</h2><p class="plan-theme">${esc(p.theme)}</p></div>
 
     <section class="sheet">
       <div class="sheet-head">
@@ -1180,6 +1275,11 @@ function render(){
       </div>
     </section>
 
+    <div class="agenote">
+      <span class="a-tag">${esc(AGE[state.age].label)}を相手にするとき</span>
+      <p>${esc(AGE[state.age].note)}</p>
+    </div>
+
     ${blocks}
     <p class="flexnote">${p.flex}</p>
     <div class="handoff"><h4>キックに入る前のチェック</h4><p>${esc(p.handoff)}</p></div>
@@ -1191,7 +1291,8 @@ function render(){
 
 
   bindSheet(flat.length, totalSets);
-  try{localStorage.setItem("ptplan2",JSON.stringify(state));}catch(e){}
+  renderRef();
+  try{localStorage.setItem("ptplan3",JSON.stringify(state));}catch(e){}
 }
 
 function bindSheet(exCount,totalSets){
@@ -1221,7 +1322,7 @@ function bindSheet(exCount,totalSets){
   upd();
 }
 
-[["segTime","time"],["segPart","part"],["segSex","sex"]].forEach(([id,key])=>{
+[["segTime","time"],["segPart","part"],["segSex","sex"],["segAge","age"]].forEach(([id,key])=>{
   document.getElementById(id).addEventListener("click",ev=>{
     const b=ev.target.closest("button");if(!b)return;
     state[key]=b.dataset.v;render();
