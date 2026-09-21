@@ -1,0 +1,13 @@
+# ノートの元写真（ローカルにのみ保持）
+*.HEIC
+*.heic
+*.JPG
+*.jpg
+*.jpeg
+*.png
+
+# macOS
+.DS_Store
+
+# Claude Code のローカル設定
+.claude/settings.local.json
